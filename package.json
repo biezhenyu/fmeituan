@@ -17,7 +17,9 @@
     "element-ui": "^2.4.6",
     "koa": "^2.5.2",
     "koa-router": "^7.4.0",
-    "nuxt": "^2.0.0"
+    "node-sass": "^4.10.0",
+    "nuxt": "^2.0.0",
+    "sass-loader": "^7.1.0"
   },
   "devDependencies": {
     "nodemon": "^1.11.0"

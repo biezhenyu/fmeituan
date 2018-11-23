@@ -25,16 +25,12 @@
             v-if="isHotPlace"
             class="hotPlace">
             <dt>热门搜索</dt>
-            <dd>
-              
-            </dd>
+            <dd v-for="(item, idx) in hotPlace" :key="idx">{{item}}</dd>
           </dl>
           <dl
             v-if="isSearchList"
             class="searchList">
-            <dd>
-              
-            </dd>
+            <dd v-for="(item, idx) in searchList" :key="idx">{{item}}</dd>
           </dl>
         </div>
         <p class="suggest">
@@ -103,8 +99,8 @@
       return {
         search: '',
         isFocus: false,
-        hotPlace: [],
-        searchList: []
+        hotPlace: ['火锅', '火锅', '火锅'],
+        searchList: ['故宫', '故宫']
       }
     },
     computed: {

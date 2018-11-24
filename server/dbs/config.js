@@ -38,7 +38,7 @@ module.exports = {
     // 过期时间
     get expire() {
       return () => {
-        // 一小时过期
+        // 一分钟
         return new Date().getTime() + 60 * 1000
       }
     }

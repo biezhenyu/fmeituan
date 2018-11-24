@@ -5,12 +5,12 @@
         <Emenu/>
       </el-col>
       <el-col :span="19">
-        <!-- <Life/> -->
+        <Life/>
       </el-col>
     </el-row>
     <el-row>
       <el-col :span="24">
-        <!-- <Artistic/> -->
+        <Artistic/>
       </el-col>
     </el-row>
   </div>
@@ -19,11 +19,13 @@
 <script>
 import axios from 'axios'
 import Emenu from '~/components/index/menu.vue'
-// import Life from '~/components/index/life.vue'
-// import Artistic from '~/components/index/artistic.vue'
+import Life from '~/components/index/life.vue'
+import Artistic from '~/components/index/artistic.vue'
 export default {
   components: {
     Emenu,
+    Life,
+    Artistic
   },
   data() {
     return {

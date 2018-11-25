@@ -5,7 +5,7 @@
 
 
 module.exports = {
-  dbs: 'mongodb://127.0.0.1:27017',
+  dbs: 'mongodb://127.0.0.1:27017/meituan',
 
   // redis的配置
   redis: {
@@ -26,7 +26,7 @@ module.exports = {
       return '592600407@qq.com'
     },
     get pass() {
-      return 'ecdxjvwdxibnbdgb'
+      return 'uyiyyhjqrfxhbbcg'
     },
     // 验证码
     get code() {

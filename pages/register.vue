@@ -78,7 +78,7 @@
 </template>
 
 <script>
-  // import CryptoJS from 'crypto-js'
+  import CryptoJS from 'crypto-js'
 
   export default {
     layout: 'blank',
@@ -141,14 +141,50 @@
           emailPass = valid
         })
         if (!namePass && !emailPass) {
-          
+
+          // 发送
+          this.$axios.post('http://127.0.0.1:3000/users/verify', {
+            username: encodeURIComponent(this.ruleForm.name),
+            email: this.ruleForm.email
+          }).then(({ status, data }) => {
+            if (status === 200 && data && data.code === 0) {
+              let count = 60
+              this.timerId = setInterval(() => {
+                this.msgStatus = `验证码已发送，剩余${count--}`
+                if (count === 0) {
+                  clearInterval(this.timerId)
+                }
+              }, 1000)
+            } else {
+              this.msgStatus = data.msg
+            }
+          })
          
         }
       },
       register () {
         this.$refs.ruleForm.validate((valid) => {
           if (valid) {
-            
+            this.$axios.post('http://127.0.0.1:3000/users/signup', {
+              username: encodeURIComponent(this.ruleForm.name),
+              // MD5加密，由于MD5方法返回的是一堆数组，需要通过toString转为字符串
+              password: CryptoJS.MD5(this.ruleForm.pwd).toString(),
+              email: this.ruleForm.email
+            }).then(({ status, data }) => {
+              if (status === 200) {
+                if (data && data.code === 0) {
+                  location.href = '/login'
+                } else {
+                  this.error = data.msg
+                }
+              } else {
+                this.error = `服务器出错，错误码：${status}`
+              }
+              // 定时清空error信息
+              setTimeout(() => {
+                this.error = ''
+              }, 1500)
+            })
           }
         })
       }

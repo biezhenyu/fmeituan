@@ -44,7 +44,7 @@
 </template>
 
 <script>
-  // import CryptoJS from 'crypto-js'
+  import CryptoJS from 'crypto-js'
 
   export default {
     layout: 'blank',
@@ -58,7 +58,21 @@
     },
     methods: {
       login () {
-        
+        console.log ('登录')
+        this.$axios.post('http://127.0.0.1:3000/users/signin', {
+          username: encodeURIComponent(this.username),
+          password: CryptoJS.MD5(this.password).toString()
+        }).then(({ status, data }) => {
+          if (status === 200) {
+            if (data && data.code === 0) {
+              location.href = '/'
+            } else {
+              this.error = data.msg
+            }
+          } else {
+            this.error = `服务器出错`
+          }
+        })
       }
     }
   }

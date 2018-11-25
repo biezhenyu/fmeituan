@@ -33,12 +33,7 @@ export default {
     }
   },
   async asyncData() {
-    let {status, data: {list}} = await axios.get('http://127.0.0.1:3000/city/list')
-    if (status === 200) {
-      return {
-        list
-      }
-    }
+    
   }
 }
 </script>

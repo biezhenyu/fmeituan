@@ -123,7 +123,6 @@ router.post('/signin', async (ctx, next) => {
           msg: '登录成功',
           user
         }
-        // 登录动作
         return ctx.login(user)
       } else {
         ctx.body = {

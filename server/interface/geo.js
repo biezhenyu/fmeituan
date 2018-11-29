@@ -4,6 +4,8 @@ const axios = require('./utils/axios');
 // 登录验证
 const sign = require('./utils/sign')
 
+const Province = require('../dbs/models/province')
+
 
 // 前缀
 let router = new Router({
@@ -24,6 +26,13 @@ router.get('/province', async (ctx, next) => {
   ctx.body = {
     province: status === 200 ? province : []
   }
+  await Province.collection.insertMany(province, {}, (err, docs) => {
+    if (err) {
+      console.info('err');
+    } else {
+      console.info('%d potatoes were successfully stored.', docs.length);
+    }
+  })
 })
 
 // 获取菜单

@@ -10,14 +10,28 @@ let router = new Router({
   prefix: '/geo'
 })
 
+// 获取位置
 router.get('/getPosition', async (ctx, next) => {
   let {status, data: {province, city}} = await axios.get(`http://cp-tools.cn/geo/getPosition?sign=${sign}`)
   status === 200
   ? ctx.body = {province, city}
   : ctx.body = {province: '', city: ''}
+})
 
-  
+// 获取省份列表
+router.get('/province', async (ctx, next) => {
+  const {status, data: {province}} = await axios.get(`http://cp-tools.cn/geo/province?sign=${sign}`)
+  ctx.body = {
+    province: status === 200 ? province : []
+  }
+})
 
+// 获取菜单
+router.get('/menu', async (ctx, next) => {
+  const {status, data: {menu}} = await axios.get(`http://cp-tools.cn/geo/menu?sign=${sign}`)
+  status === 200
+  ? ctx.body = {menu}
+  : ctx.body = {menu: []}
 })
 
 module.exports = router

@@ -16,6 +16,7 @@
             v-model="search"
             @focus="focus"
             @blur="blur"
+            @input="input"
             placeholder="搜索商家或地点"/>
           <button
             class="el-button el-button--primary">
@@ -30,7 +31,7 @@
           <dl
             v-if="isSearchList"
             class="searchList">
-            <dd v-for="(item, idx) in searchList" :key="idx">{{item}}</dd>
+            <dd v-for="(item, idx) in searchList" :key="idx">{{item.name}}</dd>
           </dl>
         </div>
         <p class="suggest">
@@ -100,7 +101,8 @@
         search: '',
         isFocus: false,
         hotPlace: ['火锅', '火锅', '火锅'],
-        searchList: ['故宫', '故宫']
+        searchList: [],
+        timer: null
       }
     },
     computed: {
@@ -120,6 +122,25 @@
           this.isFocus = false
         }, 200)
       },
+      input() {
+        if (this.timer) {
+          clearTimeout(this.timer)
+        }
+        this.timer = setTimeout(async () => {
+          let city = this.$store.state.geo.position.city.replace('市', '')
+          this.searchList = []
+          if (!this.search) {
+            return
+          }
+          let { status, data: { top } } = await this.$axios.get('http://127.0.0.1:3000/search/top', {
+            params: {
+              input: this.search,
+              city
+            }
+          })
+          this.searchList = top.slice(0, 10)
+        }, 300)
+      }
     }
   }
 </script>

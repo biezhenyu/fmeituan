@@ -5,6 +5,7 @@ const axios = require('./utils/axios');
 const sign = require('./utils/sign')
 
 const Province = require('../dbs/models/province')
+const Menu = require('../dbs/models/menu')
 
 
 // 前缀
@@ -22,10 +23,26 @@ router.get('/getPosition', async (ctx, next) => {
 
 // 获取省份列表
 router.get('/province', async (ctx, next) => {
-  const {status, data: {province}} = await axios.get(`http://cp-tools.cn/geo/province?sign=${sign}`)
+
+  // 查询数据库的数据
+  let province = await Province.find()
+  let newProvince = []
+  province = province.forEach(item => {
+    newProvince.push({id: item.id, name: item.name})
+  })
+ 
   ctx.body = {
-    province: status === 200 ? province : []
+    province: newProvince || []
   }
+
+  // const {status, data: {province}} = await axios.get(`http://cp-tools.cn/geo/province?sign=${sign}`)
+  // ctx.body = {
+  //   province: status === 200 ? province : []
+  // }
+
+  // 将爬取到的数据存入数据库
+
+  /*
   await Province.collection.insertMany(province, {}, (err, docs) => {
     if (err) {
       console.info('err');
@@ -33,14 +50,31 @@ router.get('/province', async (ctx, next) => {
       console.info('%d potatoes were successfully stored.', docs.length);
     }
   })
+  */
 })
 
 // 获取菜单
 router.get('/menu', async (ctx, next) => {
-  const {status, data: {menu}} = await axios.get(`http://cp-tools.cn/geo/menu?sign=${sign}`)
-  status === 200
-  ? ctx.body = {menu}
-  : ctx.body = {menu: []}
+
+  let menu = await Menu.find()
+  let newMenu = []
+  menu.forEach(item => newMenu.push({name: item.name, type: item.type, child: item.child}))
+  ctx.body = {menu: newMenu || []}
+
+  // const {status, data: {menu}} = await axios.get(`http://cp-tools.cn/geo/menu?sign=${sign}`)
+
+  // // 将获取到的数据插入数据库
+  // await Menu.collection.insertMany(menu, {}, (err, docs) => {
+  //   if (err) {
+  //     console.info('err');
+  //   } else {
+  //     console.info('success');
+  //   }
+  // })
+
+  // status === 200
+  // ? ctx.body = {menu}
+  // : ctx.body = {menu: []}
 })
 
 module.exports = router

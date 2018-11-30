@@ -19,6 +19,14 @@ const store = () => new Vuex.Store({
       // 获取市区
       const {status, data: {province, city}} = await app.$axios.get('http://127.0.0.1:3000/geo/getPosition')
       commit('geo/setPosition', status === 200 ? {city, province} : {city: '', province: ''})
+      
+      // 获取热搜
+      const {status: status3, data: {result}} = await app.$axios.get('http://127.0.0.1:3000/search/hotPlace', {
+        params: {
+          city: app.store.state.geo.position.city.replace('市', '')
+        }
+      })
+      commit('home/setHotPlace', status3 === 200 ? result : [])
     }
   }
 })

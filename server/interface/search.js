@@ -24,6 +24,11 @@ router.get('/top', async (ctx) => {
   }
 })
 
+// http://cp-tools.cn/search/resultsByKeywords
+router.get('/resultsBykeywords', async (ctx) => {
+  let city = ctx.store ? ctx.store.geo.position.city : ctx.query.city
+})
+
 // 获取热搜
 router.get('/hotPlace', async (ctx) => {
   let city = ctx.store ? ctx.store.geo.position.city : ctx.query.city
